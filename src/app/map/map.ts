@@ -62,7 +62,9 @@ export async function init3D(container: HTMLElement, map: MapModel) {
 
     // world
 
-    const geometry = new THREE.BoxGeometry();
+    //const geometry = new THREE.BoxGeometry();
+
+    const geometry = new THREE.CircleGeometry(map.defaultPinSize, 16);
     geometry.translate(0, 0.5, 0);
     const material = new THREE.MeshPhongMaterial({ color: 0xff0000, flatShading: true });
 
@@ -74,11 +76,12 @@ export async function init3D(container: HTMLElement, map: MapModel) {
     for (let i = 0; i < 200; i++) {
         const mesh = new THREE.Mesh(geometry, material);
         mesh.position.x = Math.random() * map.width - (map.width / 2);
-        mesh.position.y = 1;
+        mesh.position.y = 3;
         mesh.position.z = Math.random() * map.height - (map.height / 2);
-        mesh.scale.x = map.defaultPinSize;
-        mesh.scale.y = 1;//Math.random() * 80 + 10;
-        mesh.scale.z = map.defaultPinSize;
+        mesh.rotation.x = - Math.PI / 2;
+        // mesh.scale.x = map.defaultPinSize;
+        // mesh.scale.y = 1;
+        // mesh.scale.z = map.defaultPinSize;
         mesh.updateMatrix();
         mesh.matrixAutoUpdate = false;
         mesh.uuid = `pin-${i % 99}`;
@@ -119,6 +122,7 @@ export async function init3D(container: HTMLElement, map: MapModel) {
         const intersects = raycaster.intersectObjects(scene.children, true);
         intersects.forEach((hit) => {
             if (hit.object.uuid.startsWith('pin')) {
+                map.click.set(hit.object.uuid);
                 console.log(hit.object.uuid);
             }
         });
@@ -136,7 +140,7 @@ function loadFont(name: string): Promise<any> {
 }
 
 function addText(message: string, font: any, size: number): THREE.Mesh {
-    const shapes = font.generateShapes(message, size * 0.5);
+    const shapes = font.generateShapes(message, size * 0.8);
     const geometry = new THREE.ShapeGeometry(shapes);
     geometry.computeBoundingBox();
     const xMid = - 0.5 * (geometry.boundingBox!.max.x - geometry.boundingBox!.min.x);
@@ -149,7 +153,7 @@ function addText(message: string, font: any, size: number): THREE.Mesh {
     });
 
     const text = new THREE.Mesh(geometry, matLite);
-    text.position.y = 3;
+    text.position.y = 5;
     text.rotation.x = - Math.PI / 2;
     return text;
 }
