@@ -15,6 +15,10 @@ export class HomePage implements AfterViewInit {
   constructor() { }
 
   ngAfterViewInit() {
+    console.log('ngAfterViewInit');
+  }
+
+  ionViewDidEnter() {
     const map: MapModel = {
       image: 'assets/map2.webp',
       width: 7942,
