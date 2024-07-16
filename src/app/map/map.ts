@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { MapModel } from './map-model';
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 
 let camera: any, controls: any, scene: any, renderer: any;
 
@@ -22,11 +24,11 @@ function mapImage(width: number, height: number, image: string) {
     //mesh1.scale.set(scale, scale / aspect, scale);
     return mesh1;
 }
-export function init3D(container: HTMLElement, map: MapModel) {
+
+export async function init3D(container: HTMLElement, map: MapModel) {
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x999999);
     // scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
-
     scene.add(mapImage(map.width, map.height, map.image));
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -61,17 +63,23 @@ export function init3D(container: HTMLElement, map: MapModel) {
     geometry.translate(0, 0.5, 0);
     const material = new THREE.MeshPhongMaterial({ color: 0xff0000, flatShading: true });
 
+    const font = await loadFont('assets/helvetiker_regular.typeface.json');
+
     for (let i = 0; i < 200; i++) {
         const mesh = new THREE.Mesh(geometry, material);
         mesh.position.x = Math.random() * map.width - (map.width / 2);
         mesh.position.y = 0;
         mesh.position.z = Math.random() * map.height - (map.height / 2);
         mesh.scale.x = map.defaultPinSize;
-        mesh.scale.y = 2;//Math.random() * 80 + 10;
+        mesh.scale.y = 1;//Math.random() * 80 + 10;
         mesh.scale.z = map.defaultPinSize;
         mesh.updateMatrix();
         mesh.matrixAutoUpdate = false;
         scene.add(mesh);
+        const txt = addText(`${i % 99}`, font, map.defaultPinSize);
+        txt.position.x = mesh.position.x;
+        txt.position.z = mesh.position.z;
+        scene.add(txt);
     }
 
     // lights
@@ -89,6 +97,34 @@ export function init3D(container: HTMLElement, map: MapModel) {
     //
     window.addEventListener('resize', onWindowResize);
 
+}
+
+function loadFont(name: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        const loader = new FontLoader();
+        loader.load(name, function (font) {
+            resolve(font);
+        });
+    });
+}
+
+function addText(message: string, font: any, size: number): THREE.Mesh {
+    const shapes = font.generateShapes(message, size * 0.5);
+    const geometry = new THREE.ShapeGeometry(shapes);
+    geometry.computeBoundingBox();
+    const xMid = - 0.5 * (geometry.boundingBox!.max.x - geometry.boundingBox!.min.x);
+    const yMid = - 0.5 * (geometry.boundingBox!.max.y - geometry.boundingBox!.min.y);
+    geometry.translate(xMid, yMid, 0);
+    //geometry.translate(-size / 2, 0, 0)
+    const matLite = new THREE.MeshBasicMaterial({
+        color: 0xFFFFFF,
+        side: THREE.DoubleSide
+    });
+
+    const text = new THREE.Mesh(geometry, matLite);
+    text.position.y = 2;
+    text.rotation.x = - Math.PI / 2;
+    return text;
 }
 
 function onWindowResize() {

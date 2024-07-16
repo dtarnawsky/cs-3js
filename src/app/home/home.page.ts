@@ -19,7 +19,7 @@ export class HomePage implements AfterViewInit {
       image: 'assets/map2.webp',
       width: 7942,
       height: 3966,
-      defaultPinSize: 40
+      defaultPinSize: 80
     }
     init3D(this.container.nativeElement, map);
   }
