@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
 import { init3D } from '../map/map';
+import { MapModel } from '../map/map-model';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +15,12 @@ export class HomePage implements AfterViewInit {
   constructor() { }
 
   ngAfterViewInit() {
-    init3D(this.container.nativeElement);
+    const map: MapModel = {
+      image: 'assets/map2.webp',
+      width: 7942,
+      height: 3966,
+      defaultPinSize: 40
+    }
+    init3D(this.container.nativeElement, map);
   }
 }
