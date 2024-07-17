@@ -171,3 +171,7 @@ You would write:
 `import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';`
 
 This avoids the need to use import maps.
+
+## Tip: Careful with the DOM
+
+In the sample code above `window.innerWidth` and `window.innerHeight` are used (and are typically used in ThreeJS examples because most are full screen). Depending on where you place your container element you may want to instead use `container.clientWidth` and `container.clientHeight` and also use `const box = container.getBoundingClientRect();` and make sure you add `box.left` and `box.top` to account for the container's position.
