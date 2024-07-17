@@ -171,10 +171,16 @@ function render() {
 ## About imports
 
 Many examples in threeJS will show addons. Addons are an alias pointing to the examples (the examples use ImportMaps which will add complexity to your app). So instead of say:
-`import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';`
+
+```typescript
+import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+```
 
 You would write:
-`import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';`
+
+```typescript
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
+```
 
 This avoids the need to use import maps.
 
