@@ -3,8 +3,11 @@
 ## Installation
 
 In an Ionic project, run:
-`npm install three`
-`npm install @types/three --save-dev`
+
+```bash
+npm install three
+npm install @types/three --save-dev
+```
 
 ## Usage
 
@@ -22,7 +25,7 @@ Then pass this into the function that creates your scene:
 init3D(this.container.nativeElement);
 ```
 
-You can then use code from the examples by pasting into a typescript file. For example, this code has been adapted from [this sample](https://github.com/mrdoob/three.js/blob/master/examples/misc_controls_drag.html) :
+You can then use code from the [ThreeJS examples](https://threejs.org/examples/) by pasting into a typescript file. For example, this code has been adapted from [this sample](https://github.com/mrdoob/three.js/blob/master/examples/misc_controls_drag.html) :
 
 ```typescript
 import * as THREE from "three";
