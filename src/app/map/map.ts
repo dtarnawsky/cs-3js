@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { MapModel } from './map-model';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
@@ -27,11 +26,10 @@ function mapImage(width: number, height: number, image: string) {
 export async function init3D(container: HTMLElement, map: MapModel) {
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x999999);
-    // scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
     scene.add(mapImage(map.width, map.height, map.image));
 
-    const w = container.clientWidth; //window.innerWidth; //
-    const h = container.clientHeight; //window.innerHeight; // 
+    const w = container.clientWidth;
+    const h = container.clientHeight;
     console.log('init3D', w, h);
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
