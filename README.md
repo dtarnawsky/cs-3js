@@ -1,5 +1,11 @@
 # ThreeJS
 
+This is a sample project to show how to use ThreeJS in an Ionic project. ThreeJS has quite a few possible uses in an Ionic project:
+
+- Create an animated intro sequence for app startup
+- Create an offline map that can be interacted with
+- Display 3D models
+
 ## Installation
 
 In an Ionic project, run:
